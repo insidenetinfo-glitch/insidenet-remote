@@ -8,7 +8,7 @@ body {
 
 @media platform != "OSX" {
     body {
-        border-top: color(border) solid 1px;
+        @NEON_LINE_TOP;
     }
 }
 
@@ -29,8 +29,8 @@ body {
 .left-pane {
     width: 200px;
     height: *;
-    background: color(bg);
-    border-right: color(border) 1px solid;
+    background-color: color(bg);
+    @NEON_LINE_RIGHT;
     position: relative;
 }
 
@@ -67,7 +67,7 @@ body {
 div.sessions-bar {
     color: color(light-text);
     padding-top: 0.5em;
-    border-top: color(border) solid 1px;
+    @NEON_LINE_TOP;
     margin-bottom: 1em;
     position: relative;
     flow: horizontal;
@@ -130,12 +130,12 @@ div.search-id:hover span.clear-input {
 }
 
 span.clear-input:hover {
-    color: black;
+    color: color(text);
 }
 
 .your-desktop {
     border-spacing: 0.5em;
-    border-left: color(accent) solid 2px;
+    @NEON_LINE_LEFT;
     padding-left: 0.5em;
 }
 
@@ -171,7 +171,8 @@ span.clear-input:hover {
 @mixin CARD {
     padding: 1.6em;
     border-spacing: 1em;
-    background: color(bg);
+    background: color(gray-bg);
+    border: color(border) solid 1px;
     border-radius: 1em;
 }
 
@@ -190,7 +191,7 @@ span.clear-input:hover {
 
 div.connect-status {
     left: 240px;
-    border-top: color(border) solid 1px;
+    @NEON_LINE_TOP;
     width: 100%;
     padding: 1em;
 }
@@ -209,15 +210,15 @@ div.connect-status > span.link {
 }
 
 span.connect-status-1 {
-    background: #e04f5f;
+    background: #FF4D6A;
 }
 
 span.connect-status1 {
-    background: #32bea6;
+    background: #3CE68C;
 }
 
 span.connect-status0 {
-    background: #F5853B;
+    background: #FFC145;
 }
 
 div.recent-sessions-content {
@@ -341,7 +342,7 @@ div.install-me, div.trust-me {
     margin-top: 0.5em;
     padding: 20px;
     color: white;
-    background: linear-gradient(left,#e242bc,#f4727c);
+    background: linear-gradient(left,#00D9FF,#BB00FF);
 }
 
 div.trust-me > div:nth-child(1),
@@ -388,7 +389,7 @@ div#myid svg#menu, div#tags-label svg#menu {
 }
 
 div#tags-label svg#menu:hover {
-    background-color: #ddd;
+    background-color: color(menu-hover);
 }
 
 div.remote-session svg#menu {
@@ -412,7 +413,7 @@ div.remote-session svg#menu {
 
 svg#refresh-password {
     display: inline-block;
-    stroke:#ddd;
+    stroke:color(light-text);
 }
 
 svg#refresh-password:hover {
@@ -426,12 +427,12 @@ li:disabled, li:disabled:hover {
 }
 
 .grey-text {
-    color: #888 !important;
+    color: color(lighter-text) !important;
 }
 
 input.grey-text,
 textarea.grey-text {
-    color: #888 !important;
+    color: color(lighter-text) !important;
 }
 
 @media platform == "OSX" {

@@ -579,7 +579,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("2FA code must be 6 digits.", "2FA koodin on oltava 6 numeroa."),
         ("Multiple Windows sessions found", "Useita Windows istuntoja havaittu"),
         ("Please select the session you want to connect to", "Valitse istunto, johon haluat muodostaa yhteyden"),
-        ("powered_by_me", "Ylpeästi kehitetty omavaraisesti"),
+        ("powered_by_me", ""),
         ("outgoing_only_desk_tip", "Tämä asennus tukee vain lähteviä yhteyksiä."),
         ("preset_password_warning", "Esiasetettu salasana voi olla turvaton — vaihda se suojataksesi yhteytesi."),
         ("Security Alert", "Turvailmoitus"),

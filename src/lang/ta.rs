@@ -579,7 +579,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("2FA code must be 6 digits.", "2FA குறியீடு 6 எண்கள்"),
         ("Multiple Windows sessions found", "பல Windows அமர்வுகள் கண்டறியப்பட்டன"),
         ("Please select the session you want to connect to", "இணைக்க விரும்பும் அமர்வு தேர்வு"),
-        ("powered_by_me", "என்னால் இயக்கப்படுகிறது"),
+        ("powered_by_me", ""),
         ("outgoing_only_desk_tip", "வெளியேறும் அமர்வுகள் மட்டும் ஆதரவு"),
         ("preset_password_warning", "முன்னமைவு கடவுச்சொல் எச்சரிக்கை"),
         ("Security Alert", "பாதுகாப்பு எச்சரிக்கை"),

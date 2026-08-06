@@ -579,7 +579,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("2FA code must be 6 digits.", "Mã 2FA phải có 6 chữ số."),
         ("Multiple Windows sessions found", "Tìm thấy nhiều phiên Windows"),
         ("Please select the session you want to connect to", "Chọn phiên bạn muốn kết nối"),
-        ("powered_by_me", "Cung cấp bởi tôi"),
+        ("powered_by_me", ""),
         ("outgoing_only_desk_tip", "Chỉ cho phép kết nối đi."),
         ("preset_password_warning", "Cảnh báo mật khẩu thiết lập sẵn"),
         ("Security Alert", "Cảnh báo bảo mật"),

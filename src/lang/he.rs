@@ -579,7 +579,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("2FA code must be 6 digits.", "קוד אימות דו-שלבי חייב להיות באורך של 6 מספרים."),
         ("Multiple Windows sessions found", "נמצאו מספר הפעלות Windows"),
         ("Please select the session you want to connect to", "אנא בחר את ההפעלה שברצונך להתחבר אליה"),
-        ("powered_by_me", "מופעל דרכי"),
+        ("powered_by_me", ""),
         ("outgoing_only_desk_tip", "זוהי מהדורה מותאמת אישית.\nניתן להתחבר למכשירים אחרים, אך מכשירים אחרים לא יכולים להתחבר אליך."),
         ("preset_password_warning", "שימו לב: שימוש בסיסמה קבועה עלול להפחית את רמת האבטחה"),
         ("Security Alert", "התראת אבטחה"),

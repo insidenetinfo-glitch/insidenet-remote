@@ -579,7 +579,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("2FA code must be 6 digits.", "2FA कोड 6 अंकों का होना चाहिए।"),
         ("Multiple Windows sessions found", "एकाधिक Windows सत्र मिले"),
         ("Please select the session you want to connect to", "कृपया वह सत्र चुनें जिससे आप जुड़ना चाहते हैं"),
-        ("powered_by_me", "मेरे द्वारा संचालित"),
+        ("powered_by_me", ""),
         ("outgoing_only_desk_tip", "यह केवल आउटगोइंग मोड है"),
         ("preset_password_warning", "सुरक्षा के लिए, कृपया डिफ़ॉल्ट पासवर्ड बदलें।"),
         ("Security Alert", "सुरक्षा चेतावनी"),

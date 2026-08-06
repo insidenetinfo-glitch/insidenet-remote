@@ -4067,6 +4067,20 @@ fn nt_terminate_process(process_id: DWORD) -> ResultType<()> {
     }
 }
 
+pub fn set_dark_title_bar(window: HWND) {
+    use windows::Win32::Graphics::Dwm::{DwmSetWindowAttribute, DWMWA_USE_IMMERSIVE_DARK_MODE};
+    let win_hwnd = windows::Win32::Foundation::HWND(window as *mut std::ffi::c_void);
+    unsafe {
+        let dark_mode: i32 = 1;
+        let _ = DwmSetWindowAttribute(
+            win_hwnd,
+            DWMWA_USE_IMMERSIVE_DARK_MODE,
+            &dark_mode as *const i32 as *const std::ffi::c_void,
+            std::mem::size_of::<i32>() as u32,
+        );
+    }
+}
+
 pub fn try_set_window_foreground(window: HWND) {
     let env_key = SET_FOREGROUND_WINDOW;
     if let Ok(value) = std::env::var(env_key) {

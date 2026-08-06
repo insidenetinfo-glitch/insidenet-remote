@@ -579,7 +579,7 @@ pub static ref T: std::collections::HashMap<&'static str, &'static str> =
         ("2FA code must be 6 digits.", "يجب أن يتكون رمز التحقق الثنائي من 6 أرقام."),
         ("Multiple Windows sessions found", "تم العثور على جلسات متعددة للنوافذ"),
         ("Please select the session you want to connect to", "يرجى اختيار الجلسة التي ترغب في الاتصال بها"),
-        ("powered_by_me", "مدعوم بواسطة"),
+        ("powered_by_me", ""),
         ("outgoing_only_desk_tip", "اتصال الصادر فقط"),
         ("preset_password_warning", "تحذير: كلمة المرور المحفوظة قد تكون ضعيفة."),
         ("Security Alert", "تنبيه أمني"),
