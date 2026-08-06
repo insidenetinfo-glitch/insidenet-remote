@@ -1,3 +1,5 @@
+> **Inside Net** is a rebranded fork of [RustDesk](https://github.com/rustdesk/rustdesk) (name, logo, icons customized). All credit for the underlying remote desktop software goes to the original RustDesk authors and contributors. This fork is distributed under the same AGPL-3.0 license as upstream; see [LICENCE](LICENCE). Source changes: package/app renamed to "Inside Net", icons/branding replaced in `res/`, `Cargo.toml` metadata updated, `APP_NAME` changed in `libs/hbb_common/src/config.rs`.
+
 <p align="center">
   <img src="res/logo-header.svg" alt="RustDesk - Your remote desktop"><br>
   <a href="#raw-steps-to-build">Build</a> •

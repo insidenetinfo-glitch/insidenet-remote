@@ -1,11 +1,11 @@
 [package]
-name = "rustdesk"
-version = "1.4.9"
-authors = ["rustdesk <info@rustdesk.com>"]
+name = "insidenet"
+version = "1.0.0"
+authors = ["Inside Net <info@insidenet.eu>"]
 edition = "2021"
 build= "build.rs"
-description = "RustDesk Remote Desktop"
-default-run = "rustdesk"
+description = "Inside Net Remote Desktop"
+default-run = "insidenet"
 rust-version = "1.75"
 
 [lib]
@@ -26,7 +26,7 @@ use_samplerate = ["samplerate"]
 use_rubato = ["rubato"]
 use_dasp = ["dasp"]
 flutter = ["flutter_rust_bridge"]
-default = ["use_dasp"]
+default = ["use_dasp", "inline"]
 hwcodec = ["scrap/hwcodec"]
 vram = ["scrap/vram"]
 mediacodec = ["scrap/mediacodec"]
@@ -220,10 +220,10 @@ exclude = ["vdi/host", "examples/custom_plugin"]
 libxdo-sys = { path = "libs/libxdo-sys-stub" }
 
 [package.metadata.winres]
-LegalCopyright = "Copyright © 2026 Purslane Tech Pte. Ltd. All rights reserved."
-ProductName = "RustDesk"
-FileDescription = "RustDesk Remote Desktop"
-OriginalFilename = "rustdesk.exe"
+LegalCopyright = "Based on RustDesk, Copyright © 2026 Purslane Tech Pte. Ltd. Modifications Copyright © 2026 Inside Net."
+ProductName = "Inside Net"
+FileDescription = "Inside Net Remote Desktop"
+OriginalFilename = "insidenet.exe"
 
 [target.'cfg(target_os="windows")'.build-dependencies]
 winres = "0.1"
@@ -239,8 +239,8 @@ hound = "3.5"
 docopt = "1.1"
 
 [package.metadata.bundle]
-name = "RustDesk"
-identifier = "com.carriez.rustdesk"
+name = "Inside Net"
+identifier = "eu.insidenet.remote"
 icon = ["res/32x32.png", "res/128x128.png", "res/128x128@2x.png"]
 osx_minimum_system_version = "10.14"
 
