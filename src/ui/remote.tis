@@ -513,7 +513,16 @@ handler.adaptSize = function() {
             view.windowState = View.WINDOW_MAXIMIZED;
             stdout.println("Initialize to full screen");
         } else {
-            view.move(r[0], r[1], r[2], r[3]);
+            // keep the restored window fully inside the work area, otherwise its caption
+            // buttons can end up under a docked taskbar and become unreachable
+            var rx = r[0]; var ry = r[1]; var rw = r[2]; var rh = r[3];
+            if (rw > sw) rw = sw;
+            if (rh > sh) rh = sh;
+            if (rx < sx) rx = sx;
+            if (ry < sy) ry = sy;
+            if (rx + rw > sx + sw) rx = sx + sw - rw;
+            if (ry + rh > sy + sh) ry = sy + sh - rh;
+            view.move(rx, ry, rw, rh);
         }
     } else {
         var w = handler.box(#width, #border)

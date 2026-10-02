@@ -1,11 +1,11 @@
 [package]
-name = "insidenet"
+name = "insideremote"
 version = "1.0.0"
 authors = ["Inside Net <info@insidenet.eu>"]
 edition = "2021"
 build= "build.rs"
-description = "Inside Net Remote Desktop"
-default-run = "insidenet"
+description = "Inside Remote Desktop"
+default-run = "insideremote"
 rust-version = "1.75"
 
 [lib]
@@ -222,9 +222,9 @@ libxdo-sys = { path = "libs/libxdo-sys-stub" }
 
 [package.metadata.winres]
 LegalCopyright = "Based on RustDesk, Copyright © 2026 Purslane Tech Pte. Ltd. Modifications Copyright © 2026 Inside Net."
-ProductName = "Inside Net"
-FileDescription = "Inside Net Remote Desktop"
-OriginalFilename = "insidenet.exe"
+ProductName = "Inside Remote"
+FileDescription = "Inside Remote"
+OriginalFilename = "insideremote.exe"
 
 [target.'cfg(target_os="windows")'.build-dependencies]
 winres = "0.1"
@@ -240,7 +240,7 @@ hound = "3.5"
 docopt = "1.1"
 
 [package.metadata.bundle]
-name = "Inside Net"
+name = "Inside Remote"
 identifier = "eu.insidenet.remote"
 icon = ["res/32x32.png", "res/128x128.png", "res/128x128@2x.png"]
 osx_minimum_system_version = "10.14"

@@ -1614,19 +1614,18 @@ pub fn install_me(options: &str, path: String, silent: bool, debug: bool) -> Res
     if let Some(icon) = shortcut_icon_location.as_deref() {
         validate_install_value(icon)?;
     }
-    // The elevated runner expands this to `%~f0.dir`, beside its protected copy.
-    // Do not stage privileged shortcut artifacts in the user-writable `%TEMP%`.
+    // The elevated script expands this to `%~f0.dir`, next to the script itself.
     let tmp_path = "%RUSTDESK_OUTPUT_DIR%".to_owned();
     let mk_shortcut_commands = embedded_shortcut_commands(
         shortcut_bytes(&exe, None, shortcut_icon_location.as_deref())?,
         &format!("{app_name}.lnk"),
         "mk_shortcut",
-    );
+    )?;
     let uninstall_shortcut_commands = embedded_shortcut_commands(
         shortcut_bytes(&exe, Some("--uninstall"), Some("msiexec.exe"))?,
         &format!("Uninstall {app_name}.lnk"),
         "uninstall_shortcut",
-    );
+    )?;
     let tray_shortcut_commands =
         embedded_tray_shortcut_commands(&app_name, &exe, shortcut_icon_location.as_deref())?;
     let mut reg_value_desktop_shortcuts = "0".to_owned();

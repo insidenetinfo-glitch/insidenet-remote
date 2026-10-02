@@ -1,10 +1,5 @@
 use super::{wide_string, ResultType};
-use hbb_common::{
-    anyhow::anyhow,
-    bail,
-    base64::{engine::general_purpose::STANDARD, Engine as _},
-    log,
-};
+use hbb_common::{anyhow::anyhow, bail, log};
 use std::{
     ffi::OsString,
     io, mem,
@@ -71,13 +66,25 @@ pub(super) fn shortcut_bytes(
     Ok(bytes)
 }
 
-pub(super) fn embedded_shortcut_commands(bytes: Vec<u8>, filename: &str, name: &str) -> String {
-    let encoded = STANDARD.encode(bytes);
-    let encoded_path = format!("%~f0.{name}.b64");
-    format!(
-        "> \"{encoded_path}\" echo {encoded}\r\n\
-         certutil -f -decode \"{encoded_path}\" \"%RUSTDESK_OUTPUT_DIR%\\{filename}\" > nul || exit /b {BATCH_SHORTCUT_DECODE_FAILURE_EXIT_CODE}"
-    )
+// Stages the shortcut's raw bytes to an unprivileged temp file and returns a plain
+// `copy` command for the elevated script to run. An earlier revision embedded the
+// bytes as base64 in the script and decoded them with `certutil`, but certutil's
+// crypto init can stall for a long time on some machines.
+pub(super) fn embedded_shortcut_commands(
+    bytes: Vec<u8>,
+    filename: &str,
+    name: &str,
+) -> ResultType<String> {
+    let staging_path = std::env::temp_dir().join(format!(
+        "rustdesk_install_{name}_{}.lnk",
+        uuid::Uuid::new_v4().simple()
+    ));
+    std::fs::write(&staging_path, &bytes)?;
+    let staging = path_for_cmd_assignment(&staging_path)?;
+    Ok(format!(
+        "copy /Y \"{staging}\" \"%RUSTDESK_OUTPUT_DIR%\\{filename}\" > nul || exit /b {BATCH_SHORTCUT_DECODE_FAILURE_EXIT_CODE}\r\n\
+         del /f /q \"{staging}\" > nul 2>&1"
+    ))
 }
 
 pub(super) fn embedded_tray_shortcut_commands(
@@ -86,11 +93,11 @@ pub(super) fn embedded_tray_shortcut_commands(
     icon_location: Option<&str>,
 ) -> ResultType<String> {
     let filename = format!("{app_name} Tray.lnk");
-    Ok(embedded_shortcut_commands(
+    embedded_shortcut_commands(
         shortcut_bytes(exe, Some("--tray"), icon_location)?,
         &filename,
         "tray_shortcut",
-    ))
+    )
 }
 
 pub(super) fn validate_install_value(value: &str) -> ResultType<()> {
