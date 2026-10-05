@@ -120,6 +120,27 @@ const CHARS: &[char] = &[
 pub const RENDEZVOUS_SERVERS: &[&str] = &["relay.insidenet.eu"];
 pub const RS_PUB_KEY: &str = "ZeVEB9X6bXUtX65l18olXYoc406jv1eF55fs1g6f9tY=";
 
+/// Portable mode: when `insideremote.portable` sits next to the executable, all data
+/// (config, ID, peers, logs) is kept in `<exe dir>\data` instead of the user profile, and
+/// the IPC pipe gets its own name so it never talks to an installed instance.
+const PORTABLE_MARKER: &str = "insideremote.portable";
+
+lazy_static::lazy_static! {
+    static ref PORTABLE_DIR: Option<PathBuf> = {
+        let dir = std::env::current_exe().ok()?.parent()?.to_path_buf();
+        if dir.join(PORTABLE_MARKER).is_file() {
+            Some(dir)
+        } else {
+            None
+        }
+    };
+}
+
+#[inline]
+pub fn is_portable() -> bool {
+    PORTABLE_DIR.is_some()
+}
+
 pub const RENDEZVOUS_PORT: i32 = 21116;
 pub const RELAY_PORT: i32 = 21117;
 pub const WS_RENDEZVOUS_PORT: i32 = 21118;
@@ -789,6 +810,11 @@ impl Config {
         }
         #[cfg(not(any(target_os = "android", target_os = "ios")))]
         {
+            if let Some(dir) = PORTABLE_DIR.as_ref() {
+                let mut path = dir.join("data").join("config");
+                path.push(p);
+                return path;
+            }
             #[cfg(not(target_os = "macos"))]
             let org = "".to_owned();
             #[cfg(target_os = "macos")]
@@ -848,11 +874,14 @@ impl Config {
             // \\ServerName\pipe\PipeName
             // where ServerName is either the name of a remote computer or a period, to specify the local computer.
             // https://docs.microsoft.com/en-us/windows/win32/ipc/pipe-names
-            format!(
-                "\\\\.\\pipe\\{}\\query{}",
-                *APP_NAME.read().unwrap(),
-                postfix
-            )
+            let mut name = APP_NAME.read().unwrap().clone();
+            if let Some(dir) = PORTABLE_DIR.as_ref() {
+                use std::hash::{Hash, Hasher};
+                let mut h = std::collections::hash_map::DefaultHasher::new();
+                dir.to_string_lossy().to_lowercase().hash(&mut h);
+                name = format!("{}Portable{:x}", name, h.finish());
+            }
+            format!("\\\\.\\pipe\\{}\\query{}", name, postfix)
         }
         #[cfg(not(windows))]
         {
@@ -2826,7 +2855,7 @@ pub fn is_disable_account() -> bool {
 
 #[inline]
 pub fn is_disable_installation() -> bool {
-    is_some_hard_opton("disable-installation")
+    is_portable() || is_some_hard_opton("disable-installation")
 }
 
 // This function must be kept the same as the one in flutter and sciter code.
