@@ -36,7 +36,7 @@ lazy_static::lazy_static! {
 
 struct UIHostHandler;
 
-pub fn start(args: &mut [String]) {
+pub fn start(args: &mut Vec<String>) {
     #[cfg(target_os = "macos")]
     crate::platform::delegate::show_dock();
     #[cfg(all(target_os = "linux", feature = "inline"))]
@@ -92,6 +92,28 @@ pub fn start(args: &mut [String]) {
     #[cfg(windows)]
     crate::platform::windows::set_dark_title_bar(frame.get_hwnd() as _);
     let page;
+    // Windows hands the URL scheme over as a single argument, e.g. `insideremote://44106022/`
+    // or `insideremote://file-transfer/44106022`. Turn it into the usual `--connect <id>` form.
+    // Query parameters (such as a password) are deliberately ignored.
+    if args.len() == 1 && args[0].to_lowercase().starts_with(&crate::get_uri_prefix()) {
+        let rest = &args[0][crate::get_uri_prefix().len()..];
+        let rest = rest.split(|c| c == '?' || c == '#').next().unwrap_or("");
+        let mut parts = rest.split('/').filter(|s| !s.is_empty());
+        let first = parts.next().unwrap_or("");
+        let (cmd, id) = match first {
+            "connect" | "file-transfer" | "port-forward" | "rdp" => {
+                (format!("--{}", first), parts.next().unwrap_or(""))
+            }
+            _ => ("--connect".to_owned(), first),
+        };
+        let id_ok = !id.is_empty()
+            && id
+                .chars()
+                .all(|c| c.is_ascii_alphanumeric() || "-_.@:".contains(c));
+        if id_ok {
+            *args = vec![cmd, id.to_owned()];
+        }
+    }
     if args.len() > 1 && args[0] == "--play" {
         args[0] = "--connect".to_owned();
         let path: std::path::PathBuf = (&args[1]).into();
@@ -473,6 +495,15 @@ impl UI {
             .drain(..)
             .map(|p| Self::get_peer_value(p.0, p.2))
             .collect();
+        static LAST_COUNT: std::sync::atomic::AtomicUsize =
+            std::sync::atomic::AtomicUsize::new(usize::MAX);
+        if LAST_COUNT.swap(peers.len(), std::sync::atomic::Ordering::Relaxed) != peers.len() {
+            log::info!(
+                "Recent sessions: {} (peers dir: {})",
+                peers.len(),
+                hbb_common::config::Config::path("peers").display()
+            );
+        }
         Value::from_iter(peers)
     }
 

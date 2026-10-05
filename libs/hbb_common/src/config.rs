@@ -1835,6 +1835,10 @@ impl PeerConfig {
             vec_id_modified_time_path.sort_unstable_by(|a, b| b.1.cmp(&a.1));
             vec_id_modified_time_path
         } else {
+            log::warn!(
+                "Failed to read peers dir '{}'",
+                Config::path(PEERS).display()
+            );
             vec![]
         }
     }
@@ -1918,7 +1922,9 @@ impl PeerConfig {
             .map(|(id, t, p)| {
                 let c = PeerConfig::load(&id);
                 if c.info.platform.is_empty() {
-                    fs::remove_file(p).ok();
+                    // Never delete the file here: a transient read/parse failure would
+                    // silently wipe the user's recent sessions for good.
+                    log::warn!("Peer '{}' has no platform info, skipped ({})", id, p.display());
                 }
                 (id.clone(), t.clone(), c)
             })
