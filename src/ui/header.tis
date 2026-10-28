@@ -194,7 +194,8 @@ class Header: Reactor.Component {
                 <div #adjust-window .separator style="display:none"/>
                 <li #original type="view-style"><span>{svg_checkmark}</span>{translate('Original')}</li> 
                 <li #shrink type="view-style"><span>{svg_checkmark}</span>{translate('Shrink')}</li> 
-                <li #stretch type="view-style"><span>{svg_checkmark}</span>{translate('Stretch')}</li> 
+                <li #stretch type="view-style"><span>{svg_checkmark}</span>{translate('Stretch')}</li>
+                {pi.platform == "Windows" ? <li #auto-fit-resolution><span>{svg_checkmark}</span>Adatta risoluzione al mio schermo</li> : ""}
                 <div .separator />
                 <li #best type="image-quality"><span>{svg_checkmark}</span>{translate('Good image quality')}</li> 
                 <li #balanced type="image-quality"><span>{svg_checkmark}</span>{translate('Balanced')}</li> 
@@ -415,6 +416,14 @@ class Header: Reactor.Component {
             toggleQualityMonitor(me.id);
         } else if (me.id == "i444") {
             toggleI444(me.id);
+        } else if (me.id == "auto-fit-resolution") {
+            var fit_on = handler.get_option("auto-fit-resolution") != "N";
+            handler.set_option("auto-fit-resolution", fit_on ? "N" : "Y");
+            if (!fit_on) {
+                auto_fit_done = false;
+                autoFitResolution(display_width, display_height);
+            }
+            toggleMenuState();
         } else if (me.attributes.hasClass("toggle-option")) {
             handler.toggle_option(me.id);
             toggleMenuState();
@@ -495,6 +504,10 @@ function toggleMenuState() {
             var value = handler.get_toggle_option(id);
             el.attributes.toggleClass("selected", value);
         }
+    }
+    var fit_el = self.select('#auto-fit-resolution');
+    if (fit_el) {
+        fit_el.attributes.toggleClass("selected", handler.get_option("auto-fit-resolution") != "N");
     }
 }
 

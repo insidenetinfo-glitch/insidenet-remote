@@ -33,7 +33,7 @@ table > tbody {
   behavior: select-multiple;
   overflow-y: scroll-indicator;
   size: *;
-  background: white;
+  background: color(bg);
 }
 
 table th {
@@ -78,8 +78,9 @@ table.has_current thead th:current {
   font-weight: bold;
 }
 
-table tr:nth-child(odd) { background-color: white; } /* each odd row */
-table tr:nth-child(even) { background-color: #F4F5F6; } /* each even row */
+table tr:nth-child(odd) { background-color: #0A0E27; } /* each odd row */
+table tr:nth-child(even) { background-color: #12162E; } /* each even row */
+table td { color: color(text); }
 
 table.has_current tr:current /* current row */
 {
@@ -92,7 +93,7 @@ table.has_current tbody tr:checked
 }
 
 table.has_current tbody tr:checked td {
-  color: highlighttext;
+  color: #0A0E27;
 }
 
 table td
@@ -114,7 +115,7 @@ table td:nth-child(3), table td:nth-child(4) {
 }
 
 table.has_current tr:current td {
-  color: white;
+  color: #0A0E27;
 }
 
 table td:nth-child(4) {
@@ -146,12 +147,23 @@ div.toolbar .spacer {
 
 div.toolbar > div.button {
   padding: 4px 8px;
-  opacity: 0.66;
+  opacity: 0.85;
+  color: color(text);
 }
 
 div.toolbar > div.button:active {
   opacity: 1;
-  background-color: #ddd;
+  background-color: #222847;
+}
+
+div.toolbar svg path,
+div.toolbar svg polygon {
+  fill: #F2F4FA;
+}
+
+div.toolbar > div.button:hover svg path,
+div.toolbar > div.button:hover svg polygon {
+  fill: #00D9FF;
 }
 
 div.toolbar > div.button:hover {
@@ -175,6 +187,9 @@ div.navbar {
 select.select-dir {
   width: *;
   padding: 0 4px;
+  background: #12162E;
+  color: #F2F4FA;
+  border: 1px solid #2E3560;
 }
 
 div.title {
@@ -236,7 +251,7 @@ table.job-table tr td div.path {
 }
 
 table.job-table tr:current td div.path {
-  color: white;
+  color: #0A0E27;
 }
 
 table#port-forward thead tr th {
@@ -265,5 +280,5 @@ table#port-forward td.remove svg {
 table#port-forward tr.value td {
   padding-left: 1em;
   font-size: 1.5em;
-  color: black;
+  color: color(text);
 }

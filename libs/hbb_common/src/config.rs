@@ -1969,7 +1969,16 @@ impl PeerConfig {
     serde_field_string!(
         default_view_style,
         deserialize_view_style,
-        UserDefaultConfig::read(keys::OPTION_VIEW_STYLE)
+        {
+            // Inside Remote: new peers fill the window ("stretch") instead of showing the
+            // remote screen at its native size.
+            let v = UserDefaultConfig::read(keys::OPTION_VIEW_STYLE);
+            if cfg!(not(any(target_os = "android", target_os = "ios"))) && v == "original" {
+                "stretch".to_owned()
+            } else {
+                v
+            }
+        }
     );
     serde_field_string!(
         default_scroll_style,

@@ -22,6 +22,23 @@ var privacy_mode_enabled = true; // server side
 var scroll_body = $(body);
 var peer_platform = "";
 
+// Inside Remote: ask a Windows peer to switch to the resolution of the local screen, once per
+// session, unless the user turned it off for this peer ("auto-fit-resolution" = "N").
+// The server restores the original resolution when the last client disconnects.
+var auto_fit_done = false;
+function autoFitResolution(w, h) {
+    if (auto_fit_done || is_file_transfer || is_port_forward) return;
+    if (get_peer_platform() != "Windows") return;
+    if (handler.get_option("auto-fit-resolution") == "N") return;
+    var (sx, sy, sw, sh) = view.screenBox(#frame, #rectw);
+    if (!sw || !sh) return;
+    auto_fit_done = true;
+    if (sw == w && sh == h) return;
+    var d = 0;
+    if (pi && pi.current_display) d = pi.current_display;
+    handler.change_resolution(d, sw.toInteger(), sh.toInteger());
+}
+
 handler.setDisplay = function(x, y, w, h, cursor_embedded, scale) {
     display_width = w;
     display_height = h;
@@ -30,6 +47,7 @@ handler.setDisplay = function(x, y, w, h, cursor_embedded, scale) {
     display_cursor_embedded = cursor_embedded;
     display_remote_scale = scale;
     adaptDisplay();
+    autoFitResolution(w, h);
     if (recording) handler.record_screen(true, 0, w, h);
 }
 

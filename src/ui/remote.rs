@@ -537,6 +537,7 @@ impl sciter::EventHandler for SciterSession {
         fn read_remote_dir(String, bool);
         fn send_chat(String);
         fn switch_display(i32);
+        fn change_resolution(i32, i32, i32);
         fn remove_dir_all(i32, String, bool, bool);
         fn confirm_delete_files(i32, i32);
         fn set_no_confirm(i32);
